@@ -25,7 +25,6 @@ const App = () => {
 
   const selectCard = (cardID: number) => {
     const match = unselectedCards.find(card => cardID === card.id)
-    console.log(match)
     shuffleCards(playCards)
 
     if (match) {
