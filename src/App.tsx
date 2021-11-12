@@ -13,7 +13,7 @@ const App = () => {
   const [highScore, setHighScore] = useState(0)
   const [currentScore, setCurrentScore] = useState(0)
   const [playCards, setCards] = useState<PlayCard[]>(startCards)
-  const [selectedCards, setSelectedCards] = useState<PlayCard[]>([])
+  const [unselectedCards, setUnselectedCards] = useState<PlayCard[]>(startCards)
 
   const shuffleCards = (array: PlayCard[]) => {
     for (let i = 0; i < array.length; i++) {
@@ -23,26 +23,24 @@ const App = () => {
     setCards(array)
   }
 
-  const doSomething = () => {
-    console.log('hi')
-  }
   const selectCard = (cardID: number) => {
-    const found = selectedCards.find(card => cardID === card.id)
+    const match = unselectedCards.find(card => cardID === card.id)
+    console.log(match)
     shuffleCards(playCards)
 
-    if (!found) {
+    if (match) {
       const score = currentScore + 1;
       setMessage("Great! Keep going!")
       setHighScore((score > highScore) ? score : highScore)
       setCurrentScore(score)
-      setSelectedCards(playCards.filter(card => card.id === cardID))
+      setUnselectedCards(unselectedCards.filter(card => card.id !== cardID))
       return
     }
 
     setMessage("Incorrect! Try Again!")
     setHighScore((currentScore > highScore) ? currentScore : highScore)
     setCurrentScore(0)
-    setSelectedCards([])
+    setUnselectedCards(playCards)
   }
 
   return (
