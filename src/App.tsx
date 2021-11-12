@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Wrapper from './components/Wrapper'
 import Nav from './components/Nav'
 import Card from './components/Card'
 import cards from './Cards.json'
+import { PlayCard } from './types/types';
+import "./components/Wrapper.css"
 
-type PlayCard = {
-  id: number,
-  image: string,
-}
-
+const startCards: any[] = cards
 const App = () => {
 
   const [message, setMessage] = useState('Memory Game: Click A card to Begin.')
   const [highScore, setHighScore] = useState(0)
   const [currentScore, setCurrentScore] = useState(0)
-  const [playCards, setCards] = useState<PlayCard[]>(cards)
-  const [unselectedCards, setUnselectedCards] = useState(playCards)
+  const [playCards, setCards] = useState<PlayCard[]>(startCards)
+  const [selectedCards, setSelectedCards] = useState<PlayCard[]>([])
 
   const shuffleCards = (array: PlayCard[]) => {
     for (let i = 0; i < array.length; i++) {
@@ -25,47 +23,49 @@ const App = () => {
     setCards(array)
   }
 
+  const doSomething = () => {
+    console.log('hi')
+  }
   const selectCard = (cardID: number) => {
-    const found = unselectedCards.find(card => cardID === card.id)
+    const found = selectedCards.find(card => cardID === card.id)
+    shuffleCards(playCards)
 
-    if (!found === undefined) {
-      const newCards = unselectedCards.filter(card => card.id !== cardID);
+    if (!found) {
+      const score = currentScore + 1;
       setMessage("Great! Keep going!")
-      setCurrentScore(currentScore + 1)
-      setHighScore((currentScore > highScore) ? currentScore : highScore)
-      setUnselectedCards(newCards)
-      shuffleCards(playCards)
+      setHighScore((score > highScore) ? score : highScore)
+      setCurrentScore(score)
+      setSelectedCards(playCards.filter(card => card.id === cardID))
       return
     }
 
     setMessage("Incorrect! Try Again!")
     setHighScore((currentScore > highScore) ? currentScore : highScore)
     setCurrentScore(0)
-    setCards(playCards)
-    setUnselectedCards(playCards)
-    shuffleCards(playCards)
+    setSelectedCards([])
   }
 
   return (
-    <Wrapper >
+    <>
       <Nav
         highScore={highScore}
         currentScore={currentScore}
         message={message}
       />
-      <div className="container">
-        {playCards.map(card => (
-          <Card
-            id={card.id}
-            image={card.image}
-            selectCards={selectCard}
-          />
-        ))}
-      </div>
-    </Wrapper>
-
+      <Wrapper >
+        <div className="container">
+          {playCards.map(card => (
+            <Card
+              key={card.id}
+              id={card.id}
+              image={card.image}
+              onClick={() => selectCard(card.id)}
+            />
+          ))}
+        </div>
+      </ Wrapper>
+    </>
   )
-
 }
 
 export default App;
