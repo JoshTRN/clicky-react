@@ -5,23 +5,19 @@ import Card from './components/Card'
 import cards from './Cards.json'
 import { PlayCard } from './types/types';
 import "./components/Wrapper.css"
+import "./App.css"
 
+const { random } = Math;
 const startCards: any[] = cards
-const App = () => {
 
+const App = () => {
   const [message, setMessage] = useState('Memory Game: Click A card to Begin.')
   const [highScore, setHighScore] = useState(0)
   const [currentScore, setCurrentScore] = useState(0)
   const [playCards, setCards] = useState<PlayCard[]>(startCards)
   const [unselectedCards, setUnselectedCards] = useState<PlayCard[]>(startCards)
 
-  const shuffleCards = (array: PlayCard[]) => {
-    for (let i = 0; i < array.length; i++) {
-      let j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    setCards(array)
-  }
+  const shuffleCards = (a: PlayCard[]) => setCards(a.sort(() => random() - 0.5))
 
   const selectCard = (cardID: number) => {
     const match = unselectedCards.find(card => cardID === card.id)
@@ -50,7 +46,7 @@ const App = () => {
         message={message}
       />
       <Wrapper >
-        <div className="container">
+        <div className="h-auto d-flex align-content-center container">
           {playCards.map(card => (
             <Card
               key={card.id}

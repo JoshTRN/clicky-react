@@ -1,45 +1,21 @@
 .card {
   background: #fff;
   border-radius: 2px;
-  height: 170px;
+  height: var(--width);
   margin: 1rem;
   position: relative;
-  width: 170px;
+  --width: 170px;
+  width: var(--width);
   box-shadow: 0 3px 6px #999, 0 3px 6px #999;
   max-width: 20%;
+  cursor: pointer;
 }
 
 .card > .container {
   max-height: 100%;
   background:#6CADDC;
 }
+
 .card > .container > img {
   width: 100%
-}
-
-.card > .content {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  font-size: 15px;
-}
-
-.card > .content > ul {
-  list-style-type: none;
-}
-
-.card > .content > ul > li {
-  margin-top: 18px;
-}
-
-.card > .remove {
-  color: #ff1744;
-  font-size: 48px;
-  position: absolute;
-  top: -20px;
-  right: 5px;
-  cursor: pointer;
-}
-
-.card > .remove:hover {
-  color: #d50000;
 }
